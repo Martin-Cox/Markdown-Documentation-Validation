@@ -36,8 +36,7 @@ fileSystem.readdir(directory).then((fileNames: string[]) => {
 			}
 		});
 	
-		if (violations) {
-			console.log("------------------------------------------------");
+		if (violations.length > 0) {
 			console.log(fileName);
 			console.log(`${violations.length} warnings:`);
 			violations.forEach((violation) => {
