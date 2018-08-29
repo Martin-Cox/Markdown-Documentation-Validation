@@ -1,5 +1,4 @@
 import fileSystem from "fs-extra";
-
 import * as yargs from "yargs";
 
 import { Rule } from "./rule";
@@ -15,13 +14,12 @@ const argv = yargs
 			description: "The directory to read markdown documentation from."
 	}).argv;
 
-const markdownFileRegex = /\.md$/g;
 const directory = argv.directory;
 
 // Read all of the files in the directory.
 fileSystem.readdir(directory).then((fileNames: string[]) => {
 	// Filter out any files that are not .md files.
-	return fileNames.filter((fileName) => markdownFileRegex.test(fileName));
+	return fileNames.filter((fileName) => /\.md$/g.test(fileName));
 }).then((fileNames: string[]) => {
 	fileNames.forEach((fileName) => {
 		const markdownString = fileSystem.readFileSync(`${directory}/${fileName}`, "utf8");
@@ -49,10 +47,8 @@ fileSystem.readdir(directory).then((fileNames: string[]) => {
 });
 
 //TODO:
-// - Read files from a given directory (yargs?)
-// - Read files line by line so it is easier to track down violations within a file
+// - Read files line by line so it is easier to track down violations within a file -> replace match with exec
 // - Add optional justification to Rule
 // - Add some mechanism for reading in rules from an external file so people can customise their rules
-// - Print real file names out
 // - Parse markdown via https://github.com/markdown-it/markdown-it
 // - Read files async
