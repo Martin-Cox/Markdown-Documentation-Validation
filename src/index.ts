@@ -1,4 +1,5 @@
 import fileSystem from "fs-extra";
+import * as lineReader from "line-reader";
 import * as yargs from "yargs";
 
 import { Rule } from "./rule";
@@ -22,32 +23,35 @@ fileSystem.readdir(directory).then((fileNames: string[]) => {
 	return fileNames.filter((fileName) => /\.md$/g.test(fileName));
 }).then((fileNames: string[]) => {
 	fileNames.forEach((fileName) => {
-		const markdownString = fileSystem.readFileSync(`${directory}/${fileName}`, "utf8");
-
 		const violations:{ line: number, rule: Rule}[] = [];
+		let lineNumber = 1;
+		
+		// Poor typings mean we have to cast eachLine as any.
+		(lineReader.eachLine as any)(`${directory}/${fileName}`, (line: string, last: boolean, callBack: (done: boolean) => void) => {
+			rules.forEach((rule) => {
+				const matches = rule.matches(line);
+		
+				for (let i = 0; i < matches; i++) {
+					violations.push({ line: lineNumber, rule });
+				}
+			});
 
-		rules.forEach((rule) => {
-			const matches = rule.matches(markdownString);
-	
-			for (let i = 0; i < matches; i++) {
-				violations.push({ line: -1, rule });
+			lineNumber++;
+
+			callBack(!last);
+		}, () => {
+			if (violations.length > 0) {
+				console.log(fileName);
+				console.log(`${violations.length} warnings:`);
+				violations.forEach((violation) => {
+					const violationText = violation.rule.getViolationText();
+					console.log(`Line ${violation.line}: ${violation.rule.name}${violationText ? ` - ${violationText}` : ""}`);
+				});
+				console.log("------------------------------------------------");
 			}
 		});
-	
-		if (violations.length > 0) {
-			console.log(fileName);
-			console.log(`${violations.length} warnings:`);
-			violations.forEach((violation) => {
-				const violationText = violation.rule.getViolationText();
-				console.log(`Line ${violation.line}: ${violation.rule.name}${violationText ? ` - ${violationText}` : ""}`);
-			});
-			console.log("------------------------------------------------");
-		}
 	});
 });
 
 //TODO:
-// - Read files line by line so it is easier to track down violations within a file -> replace match with exec
 // - Add some mechanism for reading in rules from an external file so people can customise their rules
-// - Parse markdown via https://github.com/markdown-it/markdown-it
-// - Read files async
