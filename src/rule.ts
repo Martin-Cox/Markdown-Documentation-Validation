@@ -8,6 +8,9 @@ interface RuleOptions {
 
 	/** Whether the regex should be case sensitive or not. */
 	caseSensitive?: boolean;
+
+	/** The justification for this rule (if not immediately obvious). */
+	justification?: string;
 }
 
 /** A Rule. */
@@ -47,6 +50,11 @@ export class Rule {
 	private get _keyword(): string | undefined {
 		return this._options.keyword;
 	}
+	
+	/** Gets the justification for this rule (if not immediately obvious). */
+	private get _justification(): string | undefined {
+		return this._options.justification;
+	}
 
 	/**
 	 * Gets the number of times the given string violates the rule.
@@ -60,7 +68,7 @@ export class Rule {
 
 	/**
 	 * Gets the text to display when this rule is violated. If the rule has no suggestion, this simply returns an empty string.
-	 * If the rule has a suggestion, it returns the suggestion followed by the violating keyword (if specified).
+	 * If the rule has a suggestion, it returns the suggestion followed by the violating keyword and justification (if specified).
 	 * @returns The text to display when the rule is violated.
 	 */
 	public getViolationText(): string {
@@ -68,6 +76,6 @@ export class Rule {
 			return "";
 		}
 
-		return `Use "${this._suggestion}" instead${this._keyword ? ` of "${this._keyword}"` : ""}.`;
+		return `Use "${this._suggestion}" instead${this._keyword ? ` of "${this._keyword}"` : ""}.${ this._justification ? ` This is because ${this._justification}.` : "" }`;
 	}
 }

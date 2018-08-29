@@ -48,7 +48,6 @@ fileSystem.readdir(directory).then((fileNames: string[]) => {
 
 //TODO:
 // - Read files line by line so it is easier to track down violations within a file -> replace match with exec
-// - Add optional justification to Rule
 // - Add some mechanism for reading in rules from an external file so people can customise their rules
 // - Parse markdown via https://github.com/markdown-it/markdown-it
 // - Read files async
