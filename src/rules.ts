@@ -2,22 +2,15 @@ import fileSystem from "fs-extra";
 
 import { Rule } from "./rule";
 
-// export const rules: Rule[] = [
-// 	new Rule("No AP", "\\bAP\\b", { suggestion: "Awesome Product", keyword: "AP" }),
-// 	new Rule("File Name Casing", "\\\.JSON", { caseSensitive: true, suggestion: ".json" }),
-// 	new Rule("Strict Equality", "==", { suggestion: "===" }),
-// 	new Rule("No buh", "buh")
-// ];
-
-/**  */
+/** A rule as defined in the configuration file. */
 interface ConfigurationRule {
-	/**  */
+	/** The name of the rule. */
 	name: string;
 
-	/**  */
+	/** The regex used to determine if the rule has been violated. */
 	regex: string;
 
-	/**  */
+	/** The options. */
 	options?: {
 		/** A suggested resolution to resolve rule violations. */
 		suggestion?: string;
@@ -33,11 +26,13 @@ interface ConfigurationRule {
 	}
 }
 
+/** The configuration options. */
 interface ConfigurationOptions {
+	/** The rules. */
 	rules?: ConfigurationRule[];
 };
 
-
+/** The collection of rules. */
 export class Rules {
 	/** The collection of individual rules. */
 	private _rules: Rule[] = [];
@@ -51,15 +46,6 @@ export class Rules {
 	 */
 	public constructor(configLocation?: string) {
 		this._configLocation = configLocation;
-
-		// TODO: Convert all "system" rules to config file equivalents.
-		this._rules = this._rules.concat([
-			new Rule("No TODO", "\\bTODO\\b"),
-			new Rule("File Name Casing", "\\\.JSON", { caseSensitive: true, suggestion: ".json" }),
-			new Rule("Strict Equality", "==", { suggestion: "===" }),
-			new Rule("Strict Equality", "!=", { suggestion: "!==" }),
-			new Rule("Context Format", "\\$\\$.*?\\$\\$", { suggestion: "\\$\\$fldvalue\\$\\$", keyword: "$$context$$", justification: "the markdown processor incorrectly formats contexts when the dollar signs are not escaped"})
-		]);
 	}
 
 	/** Gets the list of rules. */
@@ -77,8 +63,6 @@ export class Rules {
 			return Promise.resolve();
 		}
 
-
-		// TODO: Typings for config
 		// TODO: Convert to Promises/async
 		const config: ConfigurationOptions = JSON.parse(fileSystem.readFileSync(this._configLocation, "utf8"));
 		config;

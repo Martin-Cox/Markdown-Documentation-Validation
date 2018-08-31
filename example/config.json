@@ -3,11 +3,24 @@
     "name": "No Buh",
     "regex": "\\buh\\b"
   }, {
-    "name": "No SfooP",
-    "regex": "\\SfooP\\b",
+    "name": "No AP",
+    "regex": "\\AP\\b",
     "options": {
-      "suggestion": "Sfol v7",
-      "keyword": "SfooP"
+      "suggestion": "Awesome Product",
+      "keyword": "AP"
+    }
+  }, {
+    "name": "File Name Casing",
+    "regex": "\\.JSON",
+    "options": {
+      "suggestion": ".json",
+      "caseSensitive": true
+    }
+  }, {
+    "name": "Strict Equality",
+    "regex": "==",
+    "options": {
+      "suggestion": "==="
     }
   }]
 }
