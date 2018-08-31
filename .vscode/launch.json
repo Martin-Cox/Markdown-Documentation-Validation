@@ -12,6 +12,15 @@
 			"args": ["${workspaceRoot}/src/index.ts"],
 			"sourceMaps": true,
 			"cwd": "${workspaceRoot}"
+		},
+		{
+			"name": "Run (Example Documentation + Config)",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/node_modules/ts-node/dist/bin.js",
+			"args": ["${workspaceRoot}/src/index.ts", "--directory=${workspaceRoot}/example", "--config=${workspaceRoot}/example/config.json"],
+			"sourceMaps": true,
+			"cwd": "${workspaceRoot}"
 		}
 	]
 }

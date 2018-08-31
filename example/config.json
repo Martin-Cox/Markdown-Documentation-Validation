@@ -1,0 +1,13 @@
+{
+  "rules": [{
+    "name": "No Buh",
+    "regex": "\\buh\\b"
+  }, {
+    "name": "No SfooP",
+    "regex": "\\SfooP\\b",
+    "options": {
+      "suggestion": "Sfol v7",
+      "keyword": "SfooP"
+    }
+  }]
+}
