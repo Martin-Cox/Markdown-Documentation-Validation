@@ -61,7 +61,7 @@ export class Rule {
 	 * @param testString The string to test.
 	 * @returns Then number of times the string violates the rules.
 	 */
-	public matches(testString: string): number {
+	public instances(testString: string): number {
 		const match = testString.match(this._regex);
 		return match ? match.length : 0;
 	}
